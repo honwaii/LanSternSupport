@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>揽星 LanStern · 德语词汇星球</title>
+  <meta name="description" content="揽星是一款基于3D星球词云的德语词汇学习应用，内置歌德学院官方词表A1/A2/B1，近5000词，完全离线，支持中英德三语界面。" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #09090f;
+      --bg2:      #0f0f1a;
+      --bg3:      #141428;
+      --card:     #1a1a2e;
+      --border:   rgba(76,201,240,0.15);
+      --accent:   #4cc9f0;
+      --accent2:  #7b5ea7;
+      --accent3:  #f72585;
+      --text:     #e8eaf6;
+      --text2:    #9fa8c7;
+      --text3:    #5a6480;
+      --radius:   16px;
+      --max:      1080px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── Stars background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 55%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 65% 15%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 80%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 35%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 55% 90%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 10% 50%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 72% 45%, rgba(255,255,255,.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 35% 35%, rgba(255,255,255,.3) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Layout helpers ── */
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+    section { padding: 80px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9,9,15,.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo { font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: 3px; text-decoration: none; }
+    .nav-logo span { color: var(--text2); font-size: 13px; font-weight: 400; margin-left: 8px; letter-spacing: 0; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--text2); text-decoration: none; font-size: 14px; transition: color .2s; }
+    .nav-links a:hover { color: var(--accent); }
+    @media (max-width: 600px) { .nav-links { display: none; } }
+
+    /* ── Hero ── */
+    #hero {
+      padding: 120px 0 100px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(76,201,240,.1);
+      border: 1px solid rgba(76,201,240,.3);
+      color: var(--accent);
+      font-size: 13px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+      letter-spacing: 1px;
+    }
+    .hero-title {
+      font-size: clamp(42px, 8vw, 72px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: 8px;
+      background: linear-gradient(135deg, #fff 30%, var(--accent) 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .hero-subtitle {
+      font-size: clamp(15px, 2.5vw, 20px);
+      color: var(--text2);
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+    }
+    .hero-desc {
+      max-width: 560px;
+      margin: 0 auto 48px;
+      color: var(--text2);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s, opacity .2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(76,201,240,.3);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 32px rgba(76,201,240,.45); }
+    .btn-ghost {
+      background: rgba(76,201,240,.08);
+      color: var(--accent);
+      border: 1px solid rgba(76,201,240,.3);
+    }
+    .btn-ghost:hover { background: rgba(76,201,240,.14); }
+
+    /* Planet decoration */
+    .planet-wrap {
+      margin: 64px auto 0;
+      width: 240px;
+      height: 240px;
+      position: relative;
+    }
+    .planet {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #2a2a5a, #09090f);
+      box-shadow:
+        0 0 60px rgba(76,201,240,.25),
+        inset -20px -20px 40px rgba(0,0,0,.5),
+        inset 10px 10px 30px rgba(76,201,240,.08);
+      margin: 0 auto;
+      position: relative;
+    }
+    .orbit {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(76,201,240,.18);
+    }
+    .orbit-1 { width: 240px; height: 240px; top: -20px; left: -20px; animation: spin 12s linear infinite; }
+    .orbit-2 { width: 290px; height: 290px; top: -45px; left: -45px; animation: spin 20s linear infinite reverse; border-color: rgba(123,94,167,.2); }
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+    .dot-1 { width: 8px; height: 8px; top: -4px; left: 50%; transform: translateX(-50%); }
+    .dot-2 { width: 6px; height: 6px; top: 50%; right: -3px; transform: translateY(-50%); background: #7b5ea7; box-shadow: 0 0 6px #7b5ea7; }
+    .dot-3 { width: 7px; height: 7px; bottom: -3px; left: 30%; background: #f72585; box-shadow: 0 0 6px #f72585; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Section titles ── */
+    .sec-label {
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .sec-title {
+      text-align: center;
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+    .sec-desc {
+      text-align: center;
+      color: var(--text2);
+      max-width: 520px;
+      margin: 0 auto 56px;
+      font-size: 15px;
+    }
+
+    /* ── Features ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .feat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color .25s, transform .25s;
+    }
+    .feat-card:hover { border-color: rgba(76,201,240,.4); transform: translateY(-3px); }
+    .feat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+    .feat-icon.blue  { background: rgba(76,201,240,.12); }
+    .feat-icon.purple{ background: rgba(123,94,167,.18); }
+    .feat-icon.pink  { background: rgba(247,37,133,.12); }
+    .feat-icon.green { background: rgba(56,239,125,.12); }
+    .feat-title { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+    .feat-body  { color: var(--text2); font-size: 14px; line-height: 1.75; }
+
+    /* ── Vocab levels ── */
+    .levels-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .level-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .level-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--glow) 0%, transparent 60%);
+      opacity: .08;
+      pointer-events: none;
+    }
+    .level-card.a1 { --glow: #4cc9f0; }
+    .level-card.a2 { --glow: #7b5ea7; }
+    .level-card.b1 { --glow: #f72585; }
+    .level-badge {
+      display: inline-block;
+      padding: 3px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    .a1 .level-badge { background: rgba(76,201,240,.15); color: #4cc9f0; }
+    .a2 .level-badge { background: rgba(123,94,167,.2);  color: #a78bd4; }
+    .b1 .level-badge { background: rgba(247,37,133,.15); color: #f72585; }
+    .level-count { font-size: 42px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .a1 .level-count { color: #4cc9f0; }
+    .a2 .level-count { color: #a78bd4; }
+    .b1 .level-count { color: #f72585; }
+    .level-unit { font-size: 13px; color: var(--text3); margin-bottom: 12px; }
+    .level-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .level-desc { font-size: 13px; color: var(--text2); }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 48px;
+    }
+    .stat-item {
+      background: var(--card);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .stat-num { font-size: 36px; font-weight: 800; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: 13px; color: var(--text2); margin-top: 6px; }
+
+    /* ── FAQ ── */
+    .faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    details {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color .2s;
+    }
+    details[open] { border-color: rgba(76,201,240,.35); }
+    summary {
+      padding: 20px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: '+';
+      font-size: 20px;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+      transition: transform .2s;
+    }
+    details[open] summary::after { transform: rotate(45deg); }
+    .faq-body {
+      padding: 0 24px 20px;
+      color: var(--text2);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* ── Contact ── */
+    #contact { text-align: center; }
+    .contact-card {
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 36px;
+    }
+    .contact-card p { color: var(--text2); margin-bottom: 32px; font-size: 15px; }
+    .contact-links { display: flex; flex-direction: column; gap: 14px; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      transition: border-color .2s, background .2s;
+    }
+    .contact-item:hover { border-color: rgba(76,201,240,.4); background: rgba(76,201,240,.06); }
+    .contact-icon { font-size: 20px; flex-shrink: 0; }
+    .contact-label { font-weight: 600; }
+    .contact-value { color: var(--text2); font-size: 13px; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--text3);
+      font-size: 13px;
+      position: relative;
+      z-index: 1;
+    }
+    footer a { color: var(--text3); text-decoration: none; }
+    footer a:hover { color: var(--text2); }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      section { padding: 60px 0; }
+      .planet-wrap { display: none; }
+      #hero { padding: 80px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero">揽星<span>LanStern</span></a>
+    <ul class="nav-links">
+      <li><a href="#features">功能</a></li>
+      <li><a href="#vocab">词库</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-badge">✦ 德语词汇学习应用</div>
+    <h1 class="hero-title">揽星</h1>
+    <p class="hero-subtitle">LanStern · Deutsch Lernen</p>
+    <p class="hero-desc">
+      用一颗星球，记住一个单词。<br />
+      3D词云 × 歌德官方词表 × 完全离线 × 中英德三语
+    </p>
+    <div class="btn-group">
+      <a class="btn btn-primary" href="#" id="appstore-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        App Store 下载
+      </a>
+      <a class="btn btn-ghost" href="#features">了解更多</a>
+    </div>
+
+    <!-- Planet decoration -->
+    <div class="planet-wrap">
+      <div class="orbit orbit-2">
+        <div class="dot dot-3"></div>
+      </div>
+      <div class="orbit orbit-1">
+        <div class="dot dot-1"></div>
+        <div class="dot dot-2"></div>
+      </div>
+      <div class="planet"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <p class="sec-label">核心功能</p>
+    <h2 class="sec-title">不一样的德语学习体验</h2>
+    <p class="sec-desc">告别枯燥的单词卡，用星球探索的方式建立真正的词汇记忆网络。</p>
+
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon blue">🌐</div>
+        <div class="feat-title">3D 星球词云</div>
+        <div class="feat-body">每个单词是一颗星球，语义相关的词汇围绕旋转。旋转球体、点击卫星词跳转，手势滑动标记掌握程度，学习在探索中发生。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon purple">🧵</div>
+        <div class="feat-title">编织复习系统</div>
+        <div class="feat-body">学够一定词汇量后，进入编织复习模式。通过关联多选题与补全题，强化词与词之间的语义网络，记忆更牢固、更系统。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon green">📖</div>
+        <div class="feat-title">三语完整词条</div>
+        <div class="feat-body">每词附冠词、词性、变形，搭配中文、英文、德文三语释义及例句，一次查询，全面掌握。冠词颜色编码辅助记忆性别。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon pink">📵</div>
+        <div class="feat-title">完全离线 · 隐私优先</div>
+        <div class="feat-body">无需注册账号，无需联网。所有学习数据仅存储于你的设备本地，不上传至任何服务器，完全保护个人隐私。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon blue">🌍</div>
+        <div class="feat-title">中英德三语界面</div>
+        <div class="feat-body">支持简体中文、English、Deutsch 三种界面语言，自动跟随系统语言，随时在设置中切换。</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon purple">📈</div>
+        <div class="feat-title">进度可视化追踪</div>
+        <div class="feat-body">连续学习天数打卡、今日进度 vs 每日目标、词集掌握率进度条，多维度数据让坚持看得见、感受到。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOCAB -->
+<section id="vocab">
+  <div class="wrap">
+    <p class="sec-label">内置词库</p>
+    <h2 class="sec-title">歌德学院官方词表</h2>
+    <p class="sec-desc">三个级别完整收录，每词附带语义关联数据，驱动星球词云的智能排列。</p>
+
+    <div class="levels-row">
+      <div class="level-card a1">
+        <div class="level-badge">A1</div>
+        <div class="level-count">689</div>
+        <div class="level-unit">个单词</div>
+        <div class="level-name">歌德 A1 词汇</div>
+        <div class="level-desc">德语入门核心词汇<br/>日常生活基础表达</div>
+      </div>
+      <div class="level-card a2">
+        <div class="level-badge">A2</div>
+        <div class="level-count">1174</div>
+        <div class="level-unit">个单词</div>
+        <div class="level-name">歌德 A2 词汇</div>
+        <div class="level-desc">初级进阶词汇<br/>扩展日常交流能力</div>
+      </div>
+      <div class="level-card b1">
+        <div class="level-badge">B1</div>
+        <div class="level-count">2983</div>
+        <div class="level-unit">个单词</div>
+        <div class="level-name">歌德 B1 词汇</div>
+        <div class="level-desc">中级核心词汇<br/>覆盖主要话题场景</div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-num">4846</div>
+        <div class="stat-label">内置总词数</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">词库级别</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label">释义语言</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">离线可用</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <p class="sec-label">常见问题</p>
+    <h2 class="sec-title">FAQ</h2>
+    <p class="sec-desc">有其他问题欢迎通过联系方式告诉我们。</p>
+
+    <div class="faq-list">
+      <details>
+        <summary>揽星是免费的吗？</summary>
+        <div class="faq-body">
+          揽星目前提供免费下载，内置歌德学院 A1/A2/B1 全部词库（共 4846 词）均免费使用，无需付费或订阅。
+        </div>
+      </details>
+
+      <details>
+        <summary>使用揽星需要联网吗？</summary>
+        <div class="faq-body">
+          不需要。揽星是完全离线的应用，所有词库数据在安装时即已内置于本地。学习进度也仅保存在你的设备上，无需账号、无需网络。<br /><br />
+          唯一需要网络的功能是"同步词库"（从远程地址下载扩展词库），但这是可选功能，不影响正常使用。
+        </div>
+      </details>
+
+      <details>
+        <summary>我的学习进度会丢失吗？</summary>
+        <div class="faq-body">
+          正常使用情况下不会。学习数据保存在设备本地数据库中。<br /><br />
+          注意：卸载应用会清除所有本地数据（iOS 系统限制）。后续版本将加入数据备份与恢复功能，敬请期待。
+        </div>
+      </details>
+
+      <details>
+        <summary>3D 星球词云是什么学习原理？</summary>
+        <div class="faq-body">
+          每个单词作为"中心词"，其语义相关词汇围绕它排列为卫星词，关联权重越高、越靠近中心。<br /><br />
+          这种学习方式来源于<strong>语境关联记忆</strong>：人脑对词汇的记忆依赖于词与词之间的联系网络，而非孤立背诵。通过探索星球，你在不知不觉中建立起更稳固的词汇网络。
+        </div>
+      </details>
+
+      <details>
+        <summary>什么是"编织复习"？何时可以使用？</summary>
+        <div class="faq-body">
+          编织复习是一种基于词汇语义关联的强化练习模式，包含两种题型：<br />
+          &bull; <strong>关联多选题</strong>：找出与中心词相关的卫星词<br />
+          &bull; <strong>补全题</strong>：根据已知的关联词，补全缺失的第三个关联词<br /><br />
+          当词集中已掌握（known）或模糊（fuzzy）词汇达到 10 个时，即可进入编织复习模式。
+        </div>
+      </details>
+
+      <details>
+        <summary>支持哪些设备？</summary>
+        <div class="faq-body">
+          揽星支持 iPhone 和 iPad，要求 iOS 15.1 及以上系统版本。未来计划推出 Android 版本。
+        </div>
+      </details>
+
+      <details>
+        <summary>词库数据来源是否权威？</summary>
+        <div class="faq-body">
+          内置词库基于<strong>歌德学院（Goethe-Institut）</strong>官方公布的 A1/A2/B1 级别考试词汇表整理而来，是目前最广泛认可的德语分级词汇标准。每个词条均经过人工审核与补充，确保释义和例句的准确性。
+        </div>
+      </details>
+
+      <details>
+        <summary>如何切换界面语言？</summary>
+        <div class="faq-body">
+          首次启动时，应用会自动跟随你的系统语言（中文/英文/德文）。<br />
+          之后可随时在<strong>设置 → 基本 → 语言</strong>中手动切换，支持简体中文、English、Deutsch 三种语言。
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <p class="sec-label">联系我们</p>
+    <h2 class="sec-title">有问题？找我们</h2>
+
+    <div class="contact-card">
+      <p>无论是使用反馈、词库问题还是合作咨询，欢迎随时联系。</p>
+      <div class="contact-links">
+        <a class="contact-item" href="mailto:your@email.com">
+          <span class="contact-icon">✉️</span>
+          <div>
+            <div class="contact-label">邮件</div>
+            <div class="contact-value">your@email.com</div>
+          </div>
+        </a>
+        <!-- 可在此添加更多联系方式，例如微信公众号、微博等 -->
+        <!--
+        <a class="contact-item" href="#">
+          <span class="contact-icon">💬</span>
+          <div>
+            <div class="contact-label">微信公众号</div>
+            <div class="contact-value">@LanStern</div>
+          </div>
+        </a>
+        -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <p style="margin-bottom:10px;">
+      <a href="#">隐私政策</a> &nbsp;·&nbsp;
+      <a href="#">用户协议</a> &nbsp;·&nbsp;
+      <a href="#faq">FAQ</a>
+    </p>
+    <p>© 2026 LanStern · 揽星 &nbsp;|&nbsp; Made with ♥ for German learners</p>
+  </div>
+</footer>
+
+</body>
+</html>
