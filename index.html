@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>揽星 LanStern · 德语词汇星球</title>
-  <meta name="description" content="揽星是一款基于3D星球词云的德语词汇学习应用，内置歌德学院官方词表A1/A2/B1，近5000词，完全离线，支持中英德三语界面。" />
+  <title data-i18n="meta.title">SternDeutsch · German Vocabulary Planet</title>
+  <meta name="description" data-i18n-attrs="content:meta.desc" content="SternDeutsch is a 3D planet word-cloud German vocabulary learning app with built-in Goethe-Institut official A1/A2/B1 word lists (~5,000 words), fully offline, supporting Goethe exam reading practice and trilingual UI (Chinese / English / German)." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -79,10 +79,31 @@
     }
     .nav-logo { font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: 3px; text-decoration: none; }
     .nav-logo span { color: var(--text2); font-size: 13px; font-weight: 400; margin-left: 8px; letter-spacing: 0; }
+    .nav-right { display: flex; align-items: center; gap: 28px; }
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a { color: var(--text2); text-decoration: none; font-size: 14px; transition: color .2s; }
     .nav-links a:hover { color: var(--accent); }
-    @media (max-width: 600px) { .nav-links { display: none; } }
+
+    /* ── Lang switcher ── */
+    .lang-btn {
+      background: rgba(76,201,240,.08);
+      border: 1px solid rgba(76,201,240,.3);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+    }
+    .lang-btn:hover { background: rgba(76,201,240,.16); border-color: rgba(76,201,240,.5); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-right { gap: 12px; }
+    }
 
     /* ── Hero ── */
     #hero {
@@ -288,7 +309,7 @@
     .b1 .level-count { color: #f72585; }
     .level-unit { font-size: 13px; color: var(--text3); margin-bottom: 12px; }
     .level-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-    .level-desc { font-size: 13px; color: var(--text2); }
+    .level-desc { font-size: 13px; color: var(--text2); white-space: pre-line; }
 
     /* ── Stats bar ── */
     .stats-bar {
@@ -404,32 +425,38 @@
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" href="#hero">揽星<span>LanStern</span></a>
-    <ul class="nav-links">
-      <li><a href="#features">功能</a></li>
-      <li><a href="#vocab">词库</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">联系</a></li>
-    </ul>
+    <a class="nav-logo" href="#hero">
+      <span data-i18n="nav.logo">SternDeutsch</span>
+      <span data-i18n="nav.logo_sub"></span>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#features" data-i18n="nav.features">Features</a></li>
+        <li><a href="#vocab" data-i18n="nav.vocab">Vocab</a></li>
+        <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+      <button class="lang-btn" id="lang-toggle" aria-label="Switch language">中文</button>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="wrap">
-    <div class="hero-badge">✦ 德语词汇学习应用</div>
-    <h1 class="hero-title">揽星</h1>
-    <p class="hero-subtitle">LanStern · Deutsch Lernen</p>
-    <p class="hero-desc">
-      用一颗星球，记住一个单词。<br />
-      3D词云 × 歌德官方词表 × 完全离线 × 中英德三语
+    <div class="hero-badge" data-i18n="hero.badge">✦ German Vocabulary App</div>
+    <h1 class="hero-title" data-i18n="hero.title">SternDeutsch</h1>
+    <p class="hero-subtitle" data-i18n="hero.subtitle">SternDeutsch · Deutsch Lernen</p>
+    <p class="hero-desc" data-i18n-html="hero.desc">
+      Memorize a word with a planet.<br />
+      3D Word Cloud × Goethe Official Word List × German Reading Practice
     </p>
     <div class="btn-group">
-      <a class="btn btn-primary" href="#" id="appstore-btn">
+      <a class="btn btn-primary" href="https://apps.apple.com/cn/app/%E6%8F%BD%E6%98%9F/id6761676361" id="appstore-btn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        App Store 下载
+        <span data-i18n="hero.appstore_btn">Download on the App Store</span>
       </a>
-      <a class="btn btn-ghost" href="#features">了解更多</a>
+      <a class="btn btn-ghost" href="#features" data-i18n="hero.learnmore_btn">Learn More</a>
     </div>
 
     <!-- Planet decoration -->
@@ -449,40 +476,40 @@
 <!-- FEATURES -->
 <section id="features">
   <div class="wrap">
-    <p class="sec-label">核心功能</p>
-    <h2 class="sec-title">不一样的德语学习体验</h2>
-    <p class="sec-desc">告别枯燥的单词卡，用星球探索的方式建立真正的词汇记忆网络。</p>
+    <p class="sec-label" data-i18n="features.label">Core Features</p>
+    <h2 class="sec-title" data-i18n="features.title">A Different German Learning Experience</h2>
+    <p class="sec-desc" data-i18n="features.desc">Leave boring flashcards behind — build a real vocabulary memory network through planet exploration.</p>
 
     <div class="features-grid">
       <div class="feat-card">
         <div class="feat-icon blue">🌐</div>
-        <div class="feat-title">3D 星球词云</div>
-        <div class="feat-body">每个单词是一颗星球，语义相关的词汇围绕旋转。旋转球体、点击卫星词跳转，手势滑动标记掌握程度，学习在探索中发生。</div>
+        <div class="feat-title" data-i18n="features.f1_title">3D Planet Word Cloud</div>
+        <div class="feat-body" data-i18n="features.f1_body">Each word is a planet, with semantically related vocabulary orbiting around it. Rotate the sphere, tap satellite words to jump, swipe to mark mastery — learning happens through exploration.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon purple">🧵</div>
-        <div class="feat-title">编织复习系统</div>
-        <div class="feat-body">学够一定词汇量后，进入编织复习模式。通过关联多选题与补全题，强化词与词之间的语义网络，记忆更牢固、更系统。</div>
+        <div class="feat-title" data-i18n="features.f2_title">Weave Review System</div>
+        <div class="feat-body" data-i18n="features.f2_body">Once you've learned enough words, enter Weave Review mode. Strengthen the semantic network between words through associative multiple-choice and fill-in-the-blank questions for deeper, more systematic retention.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon green">📖</div>
-        <div class="feat-title">三语完整词条</div>
-        <div class="feat-body">每词附冠词、词性、变形，搭配中文、英文、德文三语释义及例句，一次查询，全面掌握。冠词颜色编码辅助记忆性别。</div>
+        <div class="feat-title" data-i18n="features.f3_title">Trilingual Word Entries</div>
+        <div class="feat-body" data-i18n="features.f3_body">Every word includes article, part of speech, and conjugation, with definitions and example sentences in Chinese, English, and German — one lookup, full mastery. Color-coded articles help memorize gender.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon pink">📵</div>
-        <div class="feat-title">完全离线 · 隐私优先</div>
-        <div class="feat-body">无需注册账号，无需联网。所有学习数据仅存储于你的设备本地，不上传至任何服务器，完全保护个人隐私。</div>
+        <div class="feat-title" data-i18n="features.f4_title">Fully Offline · Privacy First</div>
+        <div class="feat-body" data-i18n="features.f4_body">No account registration required. All learning data is stored only on your device locally — nothing is uploaded to any server, fully protecting your privacy.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon blue">🌍</div>
-        <div class="feat-title">中英德三语界面</div>
-        <div class="feat-body">支持简体中文、English、Deutsch 三种界面语言，自动跟随系统语言，随时在设置中切换。</div>
+        <div class="feat-title" data-i18n="features.f5_title">Trilingual UI</div>
+        <div class="feat-body" data-i18n="features.f5_body">Supports Simplified Chinese, English, and Deutsch interface languages. Automatically follows your system language on first launch, and can be switched anytime in Settings.</div>
       </div>
       <div class="feat-card">
         <div class="feat-icon purple">📈</div>
-        <div class="feat-title">进度可视化追踪</div>
-        <div class="feat-body">连续学习天数打卡、今日进度 vs 每日目标、词集掌握率进度条，多维度数据让坚持看得见、感受到。</div>
+        <div class="feat-title" data-i18n="features.f6_title">Visual Progress Tracking</div>
+        <div class="feat-body" data-i18n="features.f6_body">Daily learning streak, today's progress vs. daily goal, word-set mastery progress bars — multi-dimensional data makes your persistence visible and motivating.</div>
       </div>
     </div>
   </div>
@@ -491,50 +518,53 @@
 <!-- VOCAB -->
 <section id="vocab">
   <div class="wrap">
-    <p class="sec-label">内置词库</p>
-    <h2 class="sec-title">歌德学院官方词表</h2>
-    <p class="sec-desc">三个级别完整收录，每词附带语义关联数据，驱动星球词云的智能排列。</p>
+    <p class="sec-label" data-i18n="vocab.label">Built-in Vocabulary</p>
+    <h2 class="sec-title" data-i18n="vocab.title">Goethe-Institut Official Word Lists</h2>
+    <p class="sec-desc" data-i18n="vocab.desc">Three complete levels, each word with semantic association data, powering the intelligent layout of the planet word cloud.</p>
 
     <div class="levels-row">
       <div class="level-card a1">
         <div class="level-badge">A1</div>
         <div class="level-count">689</div>
-        <div class="level-unit">个单词</div>
-        <div class="level-name">歌德 A1 词汇</div>
-        <div class="level-desc">德语入门核心词汇<br/>日常生活基础表达</div>
+        <div class="level-unit" data-i18n="vocab.unit">words</div>
+        <div class="level-name" data-i18n="vocab.a1_name">Goethe A1 Vocabulary</div>
+        <div class="level-desc" data-i18n="vocab.a1_desc">German beginner core vocabulary
+Basic expressions for daily life</div>
       </div>
       <div class="level-card a2">
         <div class="level-badge">A2</div>
         <div class="level-count">1174</div>
-        <div class="level-unit">个单词</div>
-        <div class="level-name">歌德 A2 词汇</div>
-        <div class="level-desc">初级进阶词汇<br/>扩展日常交流能力</div>
+        <div class="level-unit" data-i18n="vocab.unit">words</div>
+        <div class="level-name" data-i18n="vocab.a2_name">Goethe A2 Vocabulary</div>
+        <div class="level-desc" data-i18n="vocab.a2_desc">Elementary to pre-intermediate vocabulary
+Expand daily communication skills</div>
       </div>
       <div class="level-card b1">
         <div class="level-badge">B1</div>
         <div class="level-count">2983</div>
-        <div class="level-unit">个单词</div>
-        <div class="level-name">歌德 B1 词汇</div>
-        <div class="level-desc">中级核心词汇<br/>覆盖主要话题场景</div>
+        <div class="level-unit" data-i18n="vocab.unit">words</div>
+        <div class="level-name" data-i18n="vocab.b1_name">Goethe B1 Vocabulary</div>
+        <div class="level-desc" data-i18n="vocab.b1_desc">Intermediate core vocabulary
+Covers major topic areas</div>
       </div>
     </div>
 
     <div class="stats-bar">
       <div class="stat-item">
         <div class="stat-num">4846</div>
-        <div class="stat-label">内置总词数</div>
+        <div class="stat-label" data-i18n="vocab.stat1">Total Words Built-in</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">3</div>
-        <div class="stat-label">词库级别</div>
+        <div class="stat-label" data-i18n="vocab.stat2">Levels</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">3</div>
-        <div class="stat-label">释义语言</div>
+        <div class="stat-label" data-i18n="vocab.stat3">Definition Languages</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">100%</div>
-        <div class="stat-label">离线可用</div>
+        <div class="stat-label" data-i18n="vocab.stat4">Offline Available</div>
       </div>
     </div>
   </div>
@@ -543,71 +573,71 @@
 <!-- FAQ -->
 <section id="faq">
   <div class="wrap">
-    <p class="sec-label">常见问题</p>
-    <h2 class="sec-title">FAQ</h2>
-    <p class="sec-desc">有其他问题欢迎通过联系方式告诉我们。</p>
+    <p class="sec-label" data-i18n="faq.label">FAQ</p>
+    <h2 class="sec-title" data-i18n="faq.title">Frequently Asked Questions</h2>
+    <p class="sec-desc" data-i18n="faq.desc">Have other questions? Feel free to reach out through our contact information.</p>
 
     <div class="faq-list">
       <details>
-        <summary>揽星是免费的吗？</summary>
-        <div class="faq-body">
-          揽星目前提供免费下载，内置歌德学院 A1/A2/B1 全部词库（共 4846 词）均免费使用，无需付费或订阅。
+        <summary data-i18n="faq.q1_q">Is SternDeutsch free?</summary>
+        <div class="faq-body" data-i18n-html="faq.q1_a">
+          SternDeutsch is currently free to download. All built-in Goethe-Institut A1/A2/B1 word lists (4,846 words total) are available for free.
         </div>
       </details>
 
       <details>
-        <summary>使用揽星需要联网吗？</summary>
-        <div class="faq-body">
-          不需要。揽星是完全离线的应用，所有词库数据在安装时即已内置于本地。学习进度也仅保存在你的设备上，无需账号、无需网络。<br /><br />
-          唯一需要网络的功能是"同步词库"（从远程地址下载扩展词库），但这是可选功能，不影响正常使用。
+        <summary data-i18n="faq.q2_q">Do I need an internet connection to use SternDeutsch?</summary>
+        <div class="faq-body" data-i18n-html="faq.q2_a">
+          No. SternDeutsch is a fully offline app — all vocabulary data is built into the app at installation. Your learning progress is also saved only on your device, with no account or internet required.<br /><br />
+          The only feature that requires internet is "Sync Vocabulary" (downloading extended word lists from a remote source), but this is optional and does not affect normal use.
         </div>
       </details>
 
       <details>
-        <summary>我的学习进度会丢失吗？</summary>
-        <div class="faq-body">
-          正常使用情况下不会。学习数据保存在设备本地数据库中。<br /><br />
-          注意：卸载应用会清除所有本地数据（iOS 系统限制）。后续版本将加入数据备份与恢复功能，敬请期待。
+        <summary data-i18n="faq.q3_q">Will my learning progress be lost?</summary>
+        <div class="faq-body" data-i18n-html="faq.q3_a">
+          Not under normal usage. Learning data is saved in the device's local database.<br /><br />
+          Note: Uninstalling the app will clear all local data (iOS system limitation). A data backup and restore feature is planned for a future version — stay tuned.
         </div>
       </details>
 
       <details>
-        <summary>3D 星球词云是什么学习原理？</summary>
-        <div class="faq-body">
-          每个单词作为"中心词"，其语义相关词汇围绕它排列为卫星词，关联权重越高、越靠近中心。<br /><br />
-          这种学习方式来源于<strong>语境关联记忆</strong>：人脑对词汇的记忆依赖于词与词之间的联系网络，而非孤立背诵。通过探索星球，你在不知不觉中建立起更稳固的词汇网络。
+        <summary data-i18n="faq.q4_q">What is the learning principle behind the 3D Planet Word Cloud?</summary>
+        <div class="faq-body" data-i18n-html="faq.q4_a">
+          Each word acts as a "center word," with semantically related words arranged around it as satellite words — the stronger the association, the closer they orbit.<br /><br />
+          This approach is based on <strong>contextual association memory</strong>: the human brain retains vocabulary through networks of connections between words, not through isolated memorization. By exploring the planet, you unconsciously build a more robust vocabulary network.
         </div>
       </details>
 
       <details>
-        <summary>什么是"编织复习"？何时可以使用？</summary>
-        <div class="faq-body">
-          编织复习是一种基于词汇语义关联的强化练习模式，包含两种题型：<br />
-          &bull; <strong>关联多选题</strong>：找出与中心词相关的卫星词<br />
-          &bull; <strong>补全题</strong>：根据已知的关联词，补全缺失的第三个关联词<br /><br />
-          当词集中已掌握（known）或模糊（fuzzy）词汇达到 10 个时，即可进入编织复习模式。
+        <summary data-i18n="faq.q5_q">What is "Weave Review" and when can I use it?</summary>
+        <div class="faq-body" data-i18n-html="faq.q5_a">
+          Weave Review is an intensive practice mode based on semantic word associations, featuring two question types:<br />
+          &bull; <strong>Associative Multiple Choice</strong>: Identify the satellite words related to a center word<br />
+          &bull; <strong>Completion</strong>: Given known associated words, fill in the missing third word<br /><br />
+          Weave Review becomes available once you have marked at least 10 words as Known or Fuzzy within a word set.
         </div>
       </details>
 
       <details>
-        <summary>支持哪些设备？</summary>
-        <div class="faq-body">
-          揽星支持 iPhone 和 iPad，要求 iOS 15.1 及以上系统版本。未来计划推出 Android 版本。
+        <summary data-i18n="faq.q6_q">Which devices are supported?</summary>
+        <div class="faq-body" data-i18n-html="faq.q6_a">
+          SternDeutsch supports iPhone and iPad, requiring iOS 15.1 or later. An Android version is planned for the future.
         </div>
       </details>
 
       <details>
-        <summary>词库数据来源是否权威？</summary>
-        <div class="faq-body">
-          内置词库基于<strong>歌德学院（Goethe-Institut）</strong>官方公布的 A1/A2/B1 级别考试词汇表整理而来，是目前最广泛认可的德语分级词汇标准。每个词条均经过人工审核与补充，确保释义和例句的准确性。
+        <summary data-i18n="faq.q7_q">Are the vocabulary sources authoritative?</summary>
+        <div class="faq-body" data-i18n-html="faq.q7_a">
+          The built-in vocabulary is based on the <strong>Goethe-Institut</strong> official A1/A2/B1 exam word lists — the most widely recognized standard for graded German vocabulary. Each entry has been manually reviewed and supplemented to ensure accurate definitions and example sentences.
         </div>
       </details>
 
       <details>
-        <summary>如何切换界面语言？</summary>
-        <div class="faq-body">
-          首次启动时，应用会自动跟随你的系统语言（中文/英文/德文）。<br />
-          之后可随时在<strong>设置 → 基本 → 语言</strong>中手动切换，支持简体中文、English、Deutsch 三种语言。
+        <summary data-i18n="faq.q8_q">How do I switch the interface language?</summary>
+        <div class="faq-body" data-i18n-html="faq.q8_a">
+          On first launch, the app automatically follows your system language (Chinese / English / German).<br />
+          You can manually switch anytime in <strong>Settings → General → Language</strong>, with support for Simplified Chinese, English, and Deutsch.
         </div>
       </details>
     </div>
@@ -617,29 +647,19 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="wrap">
-    <p class="sec-label">联系我们</p>
-    <h2 class="sec-title">有问题？找我们</h2>
+    <p class="sec-label" data-i18n="contact.label">Contact Us</p>
+    <h2 class="sec-title" data-i18n="contact.title">Questions? Reach Out</h2>
 
     <div class="contact-card">
-      <p>无论是使用反馈、词库问题还是合作咨询，欢迎随时联系。</p>
+      <p data-i18n="contact.desc">Whether it's feedback, vocabulary issues, or collaboration inquiries — feel free to get in touch anytime.</p>
       <div class="contact-links">
-        <a class="contact-item" href="mailto:your@email.com">
+        <a class="contact-item" href="mailto:honwaii@126.com">
           <span class="contact-icon">✉️</span>
           <div>
-            <div class="contact-label">邮件</div>
+            <div class="contact-label" data-i18n="contact.email_label">Email</div>
             <div class="contact-value">honwaii@126.com</div>
           </div>
         </a>
-        <!-- 可在此添加更多联系方式，例如微信公众号、微博等 -->
-        <!--
-        <a class="contact-item" href="#">
-          <span class="contact-icon">💬</span>
-          <div>
-            <div class="contact-label">微信公众号</div>
-            <div class="contact-value">@LanStern</div>
-          </div>
-        </a>
-        -->
       </div>
     </div>
   </div>
@@ -649,13 +669,254 @@
 <footer>
   <div class="wrap">
     <p style="margin-bottom:10px;">
-      <a href="#">隐私政策</a> &nbsp;·&nbsp;
-      <a href="#">用户协议</a> &nbsp;·&nbsp;
-      <a href="#faq">FAQ</a>
+      <a href="#privacy.html" data-i18n="footer.privacy">Privacy Policy</a> &nbsp;·&nbsp;
+      <a href="#" data-i18n="footer.terms">Terms of Service</a> &nbsp;·&nbsp;
+      <a href="#faq" data-i18n="footer.faq">FAQ</a>
     </p>
-    <p>© 2026 LanStern · 揽星 &nbsp;|&nbsp; Made with ♥ for German learners</p>
+    <p data-i18n="footer.copyright">© 2026 SternDeutsch &nbsp;|&nbsp; Made with ♥ for German learners</p>
   </div>
 </footer>
+
+<!-- ──── i18n ──── -->
+<script>
+(function() {
+  const I18N = {
+    en: {
+      /* ── Meta ── */
+      "meta.title": "SternDeutsch · German Vocabulary Planet",
+      "meta.desc": "SternDeutsch is a 3D planet word-cloud German vocabulary learning app with built-in Goethe-Institut official A1/A2/B1 word lists (~5,000 words), fully offline, supporting Goethe exam reading practice and trilingual UI (Chinese / English / German).",
+
+      /* ── Nav ── */
+      "nav.logo": "SternDeutsch",
+      "nav.logo_sub": "",
+      "nav.features": "Features",
+      "nav.vocab": "Vocab",
+      "nav.faq": "FAQ",
+      "nav.contact": "Contact",
+
+      /* ── Hero ── */
+      "hero.badge": "✦ German Vocabulary App",
+      "hero.title": "SternDeutsch",
+      "hero.subtitle": "SternDeutsch · Deutsch Lernen",
+      "hero.desc": "Memorize a word with a planet.<br />3D Word Cloud × Goethe Official Word List × German Reading Practice",
+      "hero.appstore_btn": "Download on the App Store",
+      "hero.learnmore_btn": "Learn More",
+
+      /* ── Features ── */
+      "features.label": "Core Features",
+      "features.title": "A Different German Learning Experience",
+      "features.desc": "Leave boring flashcards behind — build a real vocabulary memory network through planet exploration.",
+      "features.f1_title": "3D Planet Word Cloud",
+      "features.f1_body": "Each word is a planet, with semantically related vocabulary orbiting around it. Rotate the sphere, tap satellite words to jump, swipe to mark mastery — learning happens through exploration.",
+      "features.f2_title": "Weave Review System",
+      "features.f2_body": "Once you've learned enough words, enter Weave Review mode. Strengthen the semantic network between words through associative multiple-choice and fill-in-the-blank questions for deeper, more systematic retention.",
+      "features.f3_title": "Trilingual Word Entries",
+      "features.f3_body": "Every word includes article, part of speech, and conjugation, with definitions and example sentences in Chinese, English, and German — one lookup, full mastery. Color-coded articles help memorize gender.",
+      "features.f4_title": "Fully Offline · Privacy First",
+      "features.f4_body": "No account registration required. All learning data is stored only on your device locally — nothing is uploaded to any server, fully protecting your privacy.",
+      "features.f5_title": "Trilingual UI",
+      "features.f5_body": "Supports Simplified Chinese, English, and Deutsch interface languages. Automatically follows your system language on first launch, and can be switched anytime in Settings.",
+      "features.f6_title": "Visual Progress Tracking",
+      "features.f6_body": "Daily learning streak, today's progress vs. daily goal, word-set mastery progress bars — multi-dimensional data makes your persistence visible and motivating.",
+
+      /* ── Vocab ── */
+      "vocab.label": "Built-in Vocabulary",
+      "vocab.title": "Goethe-Institut Official Word Lists",
+      "vocab.desc": "Three complete levels, each word with semantic association data, powering the intelligent layout of the planet word cloud.",
+      "vocab.unit": "words",
+      "vocab.a1_name": "Goethe A1 Vocabulary",
+      "vocab.a1_desc": "German beginner core vocabulary\nBasic expressions for daily life",
+      "vocab.a2_name": "Goethe A2 Vocabulary",
+      "vocab.a2_desc": "Elementary to pre-intermediate vocabulary\nExpand daily communication skills",
+      "vocab.b1_name": "Goethe B1 Vocabulary",
+      "vocab.b1_desc": "Intermediate core vocabulary\nCovers major topic areas",
+      "vocab.stat1": "Total Words Built-in",
+      "vocab.stat2": "Levels",
+      "vocab.stat3": "Definition Languages",
+      "vocab.stat4": "Offline Available",
+
+      /* ── FAQ ── */
+      "faq.label": "FAQ",
+      "faq.title": "Frequently Asked Questions",
+      "faq.desc": "Have other questions? Feel free to reach out through our contact information.",
+      "faq.q1_q": "Is SternDeutsch free?",
+      "faq.q1_a": "SternDeutsch is currently free to download. All built-in Goethe-Institut A1/A2/B1 word lists (4,846 words total) are available for free.",
+      "faq.q2_q": "Do I need an internet connection to use SternDeutsch?",
+      "faq.q2_a": "No. SternDeutsch is a fully offline app — all vocabulary data is built into the app at installation. Your learning progress is also saved only on your device, with no account or internet required.<br /><br />The only feature that requires internet is \"Sync Vocabulary\" (downloading extended word lists from a remote source), but this is optional and does not affect normal use.",
+      "faq.q3_q": "Will my learning progress be lost?",
+      "faq.q3_a": "Not under normal usage. Learning data is saved in the device's local database.<br /><br />Note: Uninstalling the app will clear all local data (iOS system limitation). A data backup and restore feature is planned for a future version — stay tuned.",
+      "faq.q4_q": "What is the learning principle behind the 3D Planet Word Cloud?",
+      "faq.q4_a": "Each word acts as a \"center word,\" with semantically related words arranged around it as satellite words — the stronger the association, the closer they orbit.<br /><br />This approach is based on <strong>contextual association memory</strong>: the human brain retains vocabulary through networks of connections between words, not through isolated memorization. By exploring the planet, you unconsciously build a more robust vocabulary network.",
+      "faq.q5_q": "What is \"Weave Review\" and when can I use it?",
+      "faq.q5_a": "Weave Review is an intensive practice mode based on semantic word associations, featuring two question types:<br />&bull; <strong>Associative Multiple Choice</strong>: Identify the satellite words related to a center word<br />&bull; <strong>Completion</strong>: Given known associated words, fill in the missing third word<br /><br />Weave Review becomes available once you have marked at least 10 words as Known or Fuzzy within a word set.",
+      "faq.q6_q": "Which devices are supported?",
+      "faq.q6_a": "SternDeutsch supports iPhone and iPad, requiring iOS 15.1 or later. An Android version is planned for the future.",
+      "faq.q7_q": "Are the vocabulary sources authoritative?",
+      "faq.q7_a": "The built-in vocabulary is based on the <strong>Goethe-Institut</strong> official A1/A2/B1 exam word lists — the most widely recognized standard for graded German vocabulary. Each entry has been manually reviewed and supplemented to ensure accurate definitions and example sentences.",
+      "faq.q8_q": "How do I switch the interface language?",
+      "faq.q8_a": "On first launch, the app automatically follows your system language (Chinese / English / German).<br />You can manually switch anytime in <strong>Settings → General → Language</strong>, with support for Simplified Chinese, English, and Deutsch.",
+
+      /* ── Contact ── */
+      "contact.label": "Contact Us",
+      "contact.title": "Questions? Reach Out",
+      "contact.desc": "Whether it's feedback, vocabulary issues, or collaboration inquiries — feel free to get in touch anytime.",
+      "contact.email_label": "Email",
+
+      /* ── Footer ── */
+      "footer.privacy": "Privacy Policy",
+      "footer.terms": "Terms of Service",
+      "footer.faq": "FAQ",
+      "footer.copyright": "© 2026 SternDeutsch &nbsp;|&nbsp; Made with ♥ for German learners"
+    },
+
+    zh: {
+      /* ── Meta ── */
+      "meta.title": "小星德语 SternDeutsch · 德语词汇星球",
+      "meta.desc": "揽星是一款基于3D星球词云的德语词汇学习应用，内置歌德学院官方词表A1/A2/B1，近5000词，完全离线，支持歌德考试阅读练习，支持中英德三语界面。",
+
+      /* ── Nav ── */
+      "nav.logo": "小星德语",
+      "nav.logo_sub": "SternDeutsch",
+      "nav.features": "功能",
+      "nav.vocab": "词库",
+      "nav.faq": "FAQ",
+      "nav.contact": "联系",
+
+      /* ── Hero ── */
+      "hero.badge": "✦ 德语词汇学习应用",
+      "hero.title": "小星德语",
+      "hero.subtitle": "SternDeutsch · Deutsch Lernen",
+      "hero.desc": "用一颗星球，记住一个单词。<br />3D词云 × 歌德官方词表 × 德语阅读练习",
+      "hero.appstore_btn": "App Store 下载",
+      "hero.learnmore_btn": "了解更多",
+
+      /* ── Features ── */
+      "features.label": "核心功能",
+      "features.title": "不一样的德语学习体验",
+      "features.desc": "告别枯燥的单词卡，用星球探索的方式建立真正的词汇记忆网络。",
+      "features.f1_title": "3D 星球词云",
+      "features.f1_body": "每个单词是一颗星球，语义相关的词汇围绕旋转。旋转球体、点击卫星词跳转，手势滑动标记掌握程度，学习在探索中发生。",
+      "features.f2_title": "编织复习系统",
+      "features.f2_body": "学够一定词汇量后，进入编织复习模式。通过关联多选题与补全题，强化词与词之间的语义网络，记忆更牢固、更系统。",
+      "features.f3_title": "三语完整词条",
+      "features.f3_body": "每词附冠词、词性、变形，搭配中文、英文、德文三语释义及例句，一次查询，全面掌握。冠词颜色编码辅助记忆性别。",
+      "features.f4_title": "完全离线 · 隐私优先",
+      "features.f4_body": "无需注册账号，所有学习数据仅存储于你的设备本地，不上传至任何服务器，完全保护个人隐私。",
+      "features.f5_title": "中英德三语界面",
+      "features.f5_body": "支持简体中文、English、Deutsch 三种界面语言，自动跟随系统语言，随时在设置中切换。",
+      "features.f6_title": "进度可视化追踪",
+      "features.f6_body": "连续学习天数打卡、今日进度 vs 每日目标、词集掌握率进度条，多维度数据让坚持看得见、感受到。",
+
+      /* ── Vocab ── */
+      "vocab.label": "内置词库",
+      "vocab.title": "歌德学院官方词表",
+      "vocab.desc": "三个级别完整收录，每词附带语义关联数据，驱动星球词云的智能排列。",
+      "vocab.unit": "个单词",
+      "vocab.a1_name": "歌德 A1 词汇",
+      "vocab.a1_desc": "德语入门核心词汇\n日常生活基础表达",
+      "vocab.a2_name": "歌德 A2 词汇",
+      "vocab.a2_desc": "初级进阶词汇\n扩展日常交流能力",
+      "vocab.b1_name": "歌德 B1 词汇",
+      "vocab.b1_desc": "中级核心词汇\n覆盖主要话题场景",
+      "vocab.stat1": "内置总词数",
+      "vocab.stat2": "词库级别",
+      "vocab.stat3": "释义语言",
+      "vocab.stat4": "离线可用",
+
+      /* ── FAQ ── */
+      "faq.label": "常见问题",
+      "faq.title": "FAQ",
+      "faq.desc": "有其他问题欢迎通过联系方式告诉我们。",
+      "faq.q1_q": "小星德语是免费的吗？",
+      "faq.q1_a": "小星德语目前提供免费下载，内置歌德学院 A1/A2/B1 全部词库（共 4846 词）均免费使用。",
+      "faq.q2_q": "使用小星德语需要联网吗？",
+      "faq.q2_a": "不需要。小星德语是完全离线的应用，所有词库数据在安装时即已内置于本地。学习进度也仅保存在你的设备上，无需账号、无需网络。<br /><br />唯一需要网络的功能是\"同步词库\"（从远程地址下载扩展词库），但这是可选功能，不影响正常使用。",
+      "faq.q3_q": "我的学习进度会丢失吗？",
+      "faq.q3_a": "正常使用情况下不会。学习数据保存在设备本地数据库中。<br /><br />注意：卸载应用会清除所有本地数据（iOS 系统限制）。后续版本将加入数据备份与恢复功能，敬请期待。",
+      "faq.q4_q": "3D 星球词云是什么学习原理？",
+      "faq.q4_a": "每个单词作为\"中心词\"，其语义相关词汇围绕它排列为卫星词，关联权重越高、越靠近中心。<br /><br />这种学习方式来源于<strong>语境关联记忆</strong>：人脑对词汇的记忆依赖于词与词之间的联系网络，而非孤立背诵。通过探索星球，你在不知不觉中建立起更稳固的词汇网络。",
+      "faq.q5_q": "什么是\"编织复习\"？何时可以使用？",
+      "faq.q5_a": "编织复习是一种基于词汇语义关联的强化练习模式，包含两种题型：<br />&bull; <strong>关联多选题</strong>：找出与中心词相关的卫星词<br />&bull; <strong>补全题</strong>：根据已知的关联词，补全缺失的第三个关联词<br /><br />当词集中已掌握（known）或模糊（fuzzy）词汇达到 10 个时，即可进入编织复习模式。",
+      "faq.q6_q": "支持哪些设备？",
+      "faq.q6_a": "小星德语支持 iPhone 和 iPad，要求 iOS 15.1 及以上系统版本。未来计划推出 Android 版本。",
+      "faq.q7_q": "词库数据来源是否权威？",
+      "faq.q7_a": "内置词库基于<strong>歌德学院（Goethe-Institut）</strong>官方公布的 A1/A2/B1 级别考试词汇表整理而来，是目前最广泛认可的德语分级词汇标准。每个词条均经过人工审核与补充，确保释义和例句的准确性。",
+      "faq.q8_q": "如何切换界面语言？",
+      "faq.q8_a": "首次启动时，应用会自动跟随你的系统语言（中文/英文/德文）。<br />之后可随时在<strong>设置 → 基本 → 语言</strong>中手动切换，支持简体中文、English、Deutsch 三种语言。",
+
+      /* ── Contact ── */
+      "contact.label": "联系我们",
+      "contact.title": "有问题？找我们",
+      "contact.desc": "无论是使用反馈、词库问题还是合作咨询，欢迎随时联系。",
+      "contact.email_label": "邮件",
+
+      /* ── Footer ── */
+      "footer.privacy": "隐私政策",
+      "footer.terms": "用户协议",
+      "footer.faq": "FAQ",
+      "footer.copyright": "© 2026 SternDeutsch · 小星德语 &nbsp;|&nbsp; Made with ♥ for German learners"
+    }
+  };
+
+  const LANG_KEY = 'stern-lang';
+  const DEFAULT_LANG = 'en';
+
+  let currentLang = localStorage.getItem(LANG_KEY) || DEFAULT_LANG;
+
+  function applyLang(lang) {
+    const dict = I18N[lang];
+    if (!dict) return;
+
+    /* Elements with data-i18n (textContent) */
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key] !== undefined) {
+        el.textContent = dict[key];
+      }
+    });
+
+    /* Elements with data-i18n-html (innerHTML) */
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      if (dict[key] !== undefined) {
+        el.innerHTML = dict[key];
+      }
+    });
+
+    /* Elements with data-i18n-attrs (e.g. "content:meta.desc") */
+    document.querySelectorAll('[data-i18n-attrs]').forEach(el => {
+      const pairs = el.getAttribute('data-i18n-attrs').split(',');
+      pairs.forEach(pair => {
+        const [attr, key] = pair.split(':').map(s => s.trim());
+        if (attr && key && dict[key] !== undefined) {
+          el.setAttribute(attr, dict[key]);
+        }
+      });
+    });
+
+    /* Update <html lang> */
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+    /* Update toggle button text */
+    const btn = document.getElementById('lang-toggle');
+    if (btn) {
+      btn.textContent = lang === 'zh' ? 'English' : '中文';
+    }
+
+    currentLang = lang;
+    localStorage.setItem(LANG_KEY, lang);
+  }
+
+  /* Apply saved/default language on load */
+  applyLang(currentLang);
+
+  /* Toggle button */
+  document.getElementById('lang-toggle').addEventListener('click', function() {
+    const next = currentLang === 'en' ? 'zh' : 'en';
+    applyLang(next);
+  });
+})();
+</script>
 
 </body>
 </html>
